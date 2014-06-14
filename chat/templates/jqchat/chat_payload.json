@@ -1,0 +1,12 @@
+{
+	"status": {{ StatusCode }},
+	"time": "{{ current_unix_timestamp }}",
+	{% if NewDescription %}	
+		"description": {{ NewDescription }},
+	{% endif %}
+	"messages": [
+	{% for row in NewMessages %}
+	{ "text": "{{ row.created|date:"d/m/Y H:i:s" }} --> {{ row.text|safe }}"}
+	{% if not forloop.last %},{% endif %}{% endfor %}]
+	{{ CustomPayload|default:''|safe }}
+}

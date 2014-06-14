@@ -1,0 +1,38 @@
+<html>
+<head>
+	<style type="text/css">
+	.item_selecao{
+		font-size: 18pt;
+		margin: 10px 15px;
+		position: relative;
+		width: 45%;
+		float: left;
+	}
+	.nome_selecao{
+		float: left;
+	}
+	.img_selecao{
+		float: right;
+		padding-right: 10px;
+	}
+	</style>
+</head>
+<body>
+<div class="times">
+	{% for item in selecoes %}
+		<div class='item_selecao'>
+			<div class="nome_selecao">
+				{{ item.nome }}
+			</div>
+			<div class="img_selecao">
+				<img class="imagem_bandeira" src="{{ item.img }}" />
+			</div>
+		</div>
+	{% empty %}
+		<div>
+			Nenhuma Seleção Cadastrada
+		</div>
+	{% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<html>
+<head>
+	<style type="text/css">
+		.item_grupo{
+			margin: 5px 10px;
+			padding: 5px;
+			border: 1px solid #CCC;
+			position: relative;
+		}
+		.nome_grupo{
+			text-align: center;
+			font-size: 18pt; 
+		}
+		.item_jogo{
+			text-align: center;
+			font-size: 14pt; 	
+			float: left;
+			width: 48%;
+			border: 1px solid #DDD;
+			border-radius: 3px;
+			margin: 5px;
+		}
+		.cl{
+			clear: both;
+		}
+	</style>
+</head>
+<body>
+	<div class="grupos">
+		{% for grp in grupos %}
+			<div class="item_grupo">
+				<div class="nome_grupo">{{ grp.nome }}</div>
+				{% for jg in grp.jogo_set.all %}
+					<div class="item_jogo">
+						{{ jg.time_a }} X {{ jg.time_b }}
+					</div>
+				{% endfor %}
+				<div class="cl"></div>
+			</div>
+		{% endfor %}
+	</div>
+</body>
+</html>

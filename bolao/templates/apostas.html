@@ -1,0 +1,122 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% block content %}
+<script type="text/javascript" src="{% static 'js/jquery-1.10.2.js' %}"></script>
+<link type="text/css" rel="stylesheet" href="{% static 'admin/css/forms.css' %}"></link>
+
+<style type="text/css">
+	.item_grupo{
+		margin: 5px 10px;
+		padding: 5px;
+		border: 1px solid #CCC;
+		position: relative;
+	}
+	.nome_grupo{
+		text-align: center;
+		font-size: 18pt; 
+	}
+	.item_jogo{
+		text-align: center;
+		font-size: 14pt; 	
+		float: left;
+		width: 48%;
+		height: 35px;
+		border: 1px solid #DDD;
+		border-radius: 3px;
+		margin: 5px;
+		padding-top: 7px;
+	}
+	.cl{
+		clear: both;
+	}
+	.detalhe_jogo{
+		margin: 0px 45px;
+		height: 38px;
+		width: auto;
+	}
+	.time_a{
+		float: left;
+	}
+	.time_b{
+		float: right;
+	}
+
+	input[type="number"]{
+		text-align: center;
+		width: 50px;
+	}
+</style>
+<div class="grupos">
+	{% for grp in grupos %}
+		<div class="item_grupo">
+			<div class="nome_grupo">{{ grp.nome }}</div>
+			{% for jg in grp.jogo_set.all %}
+				<div class="item_jogo">
+					<input class="jogo_id" id="id_jogo_{{ jg.id }}" 
+					name="jogo" type="hidden" value="{{ jg.id }}" />
+					{% for ap in form %}
+						{% if ap.initial.jogo == jg.id %}
+							<input class="id" id="id_{{ ap.id }}" 
+							name="id" type="hidden" value="{{ ap.initial.id }}" />
+							<div class="detalhe_jogo time_a">
+								{{ ap.gols_time_a }}
+							</div>
+							<div class="time_a">
+								<img src="{{ jg.time_a.img }}">
+							</div>
+								{{ jg.time_a }}
+							 X 
+								{{ jg.time_b }}
+							<div class="detalhe_jogo time_b">
+								{{ ap.gols_time_b }}
+							</div>
+							<div class="time_b">
+								<img src="{{ jg.time_b.img }}">
+							</div>
+						{% endif %}
+					{% endfor %}
+					<div class="cl"></div>
+				</div>
+			{% endfor %}
+			<div class="cl"></div>
+		</div>
+	{% endfor %}
+</div>
+<div class="submit-row">
+	<input class="btn_enviar default" type="button" value="Salvar Apostas"></input>
+</div>
+
+<script type="text/javascript">
+	var data = {}
+	data['csrfmiddlewaretoken'] = '{{ csrf_token }}';
+	$(".btn_enviar").click(function(){
+		//data = [];
+		$(".item_jogo").each(function(index){
+			var id = $(this).children(".id").val();
+			item = {}
+			item.id = id;
+			item.jogo_id = $(this).children(".jogo_id").val();
+			item.gols_time_a = $(this).children(".time_a").children().val();
+			item.gols_time_b = $(this).children(".time_b").children().val();
+			data[id] = item;
+		});
+		enviar(data);
+	});
+
+	function enviar(data){
+		$.ajax({
+			url:'/bolao/apostas/',
+			//dataType:'json',
+			data:data,
+			method:'post',
+			success:function(result){
+				alert(result);
+			},
+			error:function(result) {
+				alert(result);
+			}
+		});
+	}
+</script>
+
+{% endblock %}

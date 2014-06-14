@@ -1,0 +1,45 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load extras_tags %}
+{% block content %}
+
+<style type="text/css">
+	.chat_room_item{
+		font-size: 14pt;
+		padding: 8px;
+		border: 1px solid #bbb;
+		border-radius: 4px;
+	}
+	.float{
+		float: left;
+		width: 30%;
+	}
+</style>
+
+<div>
+	<h1>Salas de chat:</h1>
+	<div>
+		{% for room in rooms %}
+			<div class="chat_room_item">
+				<div class="float">
+					<a href="{% url 'jqchat_test_window' room.id %}">
+						{{forloop.counter}} - {{ room }}
+					</a>
+				</div>
+				<div class="float">
+					Total de mensagens:
+					{{ room.message_set.all|length }}
+				</div>
+				<div class="float">
+					Ultima mensagem:
+					{{ room.last_activity|formatDate }}
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		{% empty %}
+			<div class="chat_room_item">Nenhuma sala aberta no momento</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}

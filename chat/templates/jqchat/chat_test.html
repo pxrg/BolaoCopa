@@ -1,0 +1,49 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{# An example chat window #}
+
+{% block head_title %}Chat Client{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<!-- Load the JS for the chat window and start retrieving messages. -->
+<script type="text/javascript" src="{% static 'js/jquery-1.10.2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jqchat.js' %}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		InitChatWindow("{% url 'jqchat_ajax' room.id %}", null);
+	});
+</script>
+<style type="text/css">
+	/* Example styling for the chat window */
+   #chatwindow {
+     height: 250px;
+     width: 50%;
+     border: 1px solid #CCC6C6;
+     padding: 5px;
+     margin: 10px 0;
+     overflow: auto;
+     background-color: white;
+   }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h2>Sala: {{ room }}</h2>
+<div>
+  <a href="{% url 'chat' %}">Voltar Salas de chat's</a>
+</div>
+
+<div id="chatwindow"><span id="loading">Loading...</span></div>
+
+<form id="chatform">
+	{% csrf_token %}
+	<label for="msg">Message:</label>
+	<input type="text" id="msg" />
+	<input type="submit" value="Send message" /><br />
+</form>
+
+<script type="text/javascript">document.getElementById("msg").focus();</script>
+
+{% endblock %}

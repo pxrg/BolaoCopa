@@ -1,0 +1,29 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% block content %}
+	<style type="text/css">
+	.rank{
+		margin: 15px;
+	}
+	.item_pontuacao{
+		margin: 5px;
+		font-size: 14pt;
+		padding: 8px 22px;
+		border: 1px solid #DDD;
+		border-radius: 3px; 
+	}
+	</style>
+
+	<div class="rank">
+		<h1> Ranking </h1>
+		{% for item  in pontos %}
+			<div class="item_pontuacao">
+				( {{ forloop.counter }} ) {{ item }}
+			</div>
+		{% empty %}
+			<div>
+				Nenhum usuário pontuou ainda.
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}
