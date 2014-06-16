@@ -1,0 +1,1 @@
+web: gunicorn bolao_copa.wsgi
